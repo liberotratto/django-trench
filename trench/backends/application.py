@@ -1,6 +1,9 @@
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 import logging
+
+
+User = get_user_model()
 
 from trench.backends.base import AbstractMessageDispatcher
 from trench.responses import (
