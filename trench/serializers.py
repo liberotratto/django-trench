@@ -149,6 +149,12 @@ class UserMFAMethodSerializer(ModelSerializer):
         fields = ("name", "is_primary")
 
 
+class UserMFAMethodWithActiveSerializer(UserMFAMethodSerializer):
+    class Meta:
+        model = get_mfa_model()
+        fields = ("id", "is_active")
+
+
 class ChangePrimaryMethodValidator(ProtectedActionValidator):
     method = ChoiceField(choices=available_method_choices())
 

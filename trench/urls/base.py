@@ -7,6 +7,7 @@ __all__ = [
 
 from trench.views import (
     MFAConfigView,
+    MFAEditUserMethodView,
     MFAListActiveUserMethodsView,
     MFAMethodActivationView,
     MFAMethodBackupCodesRegenerationView,
@@ -44,6 +45,11 @@ urlpatterns = (
         "mfa/user-active-methods/",
         MFAListActiveUserMethodsView.as_view(),
         name="mfa-list-user-active-methods",
+    ),
+    path(
+        "mfa/user-edit-method/<int:pk>/",
+        MFAEditUserMethodView.as_view(),
+        name="mfa-edit-user-method",
     ),
     path(
         "mfa/change-primary-method/",

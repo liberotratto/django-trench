@@ -3,8 +3,8 @@ from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 from abc import ABC, abstractmethod
-from rest_framework.generics import ListAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.generics import ListAPIView, UpdateAPIView
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.status import (
@@ -36,6 +36,7 @@ from trench.serializers import (
     MFAMethodCodeSerializer,
     MFAMethodDeactivationValidator,
     UserMFAMethodSerializer,
+    UserMFAMethodWithActiveSerializer,
     generate_model_serializer,
 )
 from trench.settings import SOURCE_FIELD, trench_settings
@@ -207,6 +208,12 @@ class MFAListActiveUserMethodsView(ListAPIView):
     def get_queryset(self) -> QuerySet:
         mfa_model = get_mfa_model()
         return mfa_model.objects.list_active(user_id=self.request.user.id)
+
+
+class MFAEditUserMethodView(UpdateAPIView):
+    serializer_class = UserMFAMethodWithActiveSerializer
+    queryset = get_mfa_model().objects.all()
+    permission_classes = (IsAdminUser,)
 
 
 class MFAMethodRequestCodeView(APIView):
